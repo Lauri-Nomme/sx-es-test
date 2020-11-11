@@ -41,7 +41,8 @@ script:
     (for t in *.sx; do
       echo $t:
       { code=$(curl -s -o /dev/stderr --write-out "%{http_code}" -H'Authorization: Bearer 7a499b39279cb2f7' --data-binary @$t 'http://127.0.0.1:18388/API/v1.0/?scriptPath=/user'); } 2>&1
-      if [ $((code/100)) -ne 2 ]; then exit $code; fi
+      echo $code
+      if [ $((code/100)) -ne 2 ]; then exit 1; fi
     done)
 
 after_failure:
