@@ -1,0 +1,20 @@
+services:
+  - docker
+
+env:
+  - SX_VER=latest
+  - SX_VER=v1.4.67
+
+before_install:
+  - docker pull spectx/spectx:$SX_VER
+  - >-
+      docker run -d
+      -p 8388:8388
+      -e SPECTX_ACCEPT_EULA=true
+      -e SPECTX_ADMIN_PASSWORD=kalamaja
+      -v spectx.lic:/opt/spectx/spectx.lic
+      spectx/spectx:$SX_VER
+  - docker ps -a
+
+script:
+  - echo yep
