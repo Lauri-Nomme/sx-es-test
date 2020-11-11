@@ -19,8 +19,9 @@ before_install:
       -v $(realpath spectx.lic):/opt/spectx/spectx.lic
       spectx/spectx:$SX_VER -vvv
   - export SX_CID=$(cat sx.cid)
-  - docker exec -uroot $SX_CID bash '-c' 'apk add sqlite; until [ -f /opt/spectxhome/sxwgui.db ] ; do echo . ; sleep 0.1 ; done; echo yep ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "update users set api_access_key = \"7a499b39279cb2f7\";"'
-  - sleep 10
+  - docker exec -uroot $SX_CID bash '-c' 'while true ; do netstat -ltn | grep -cq 8388 && break; sleep 0.1 ; done'
+  - sleep 5
+  - docker exec -uroot $SX_CID bash '-c' 'apk add sqlite; until [ -f /opt/spectxhome/sxwgui.db ] ; do echo . ; sleep 0.1 ; done; echo yep ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "update users set api_access_key = \"7a499b39279cb2f7\";" ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "select * from users;"'
   - >-
     curl -v -H'Authorization: Bearer 7a499b39279cb2f7' -d'dual(20)' 'http://127.0.0.1:18388/API/v1.0/?scriptPath=/user' || true
   - docker logs $SX_CID
