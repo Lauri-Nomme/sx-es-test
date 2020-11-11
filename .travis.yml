@@ -4,19 +4,24 @@ services:
   - docker
 
 env:
-  - SX_VER=latest
+#  - SX_VER=latest
   - SX_VER=v1.4.67
 
 before_install:
   - docker pull spectx/spectx:$SX_VER
+  - rm -f sx.cid || true
   - >-
       docker run -d
+      --cidfile sx.cid
       -p 8388:8388
       -e SPECTX_ACCEPT_EULA=true
       -e SPECTX_ADMIN_PASSWORD=kalamaja
-      -v spectx.lic:/opt/spectx/spectx.lic
+      -v $(realpath spectx.lic):/opt/spectx/spectx.lic
       spectx/spectx:$SX_VER
-  - docker ps -a
+  - export SX_CID=$(cat sx.cid)
+  - docker exec -uroot $SX_CID bash '-c' 'apk add sqlite; until [ -f /opt/spectxhome/sxwgui.db ] ; do echo . ; sleep 0.1 ; done; echo yep ; sqlite3 /opt/spectxhome/sxwgui.db "update users set api_access_key = \"7a499b39279cb2f7\";"'
+  - >-
+    curl -v -H'Authorization: Bearer 7a499b39279cb2f7' -d'dual(20)' 'http://127.0.0.1:8388/API/v1.0/?scriptPath=/user'
 
 script:
   - echo yep
