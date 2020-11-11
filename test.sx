@@ -1,2 +1,4 @@
-dual(10)
-.save_es(uri:'es:9200', index:'imported')
+@import = dual(10)
+.save_es(uri:'127.0.0.1:9200', index:'imported');
+
+Assert.equals('', values(rows:10L), @import.select(rows));

@@ -8,6 +8,7 @@ env:
     - SX_VER=v1.4.67
   jobs:
     - ES_VER=1.7.6-alpine
+    - ES_VER=7.9.3
 
 before_install:
   - docker network create lol
