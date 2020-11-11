@@ -13,7 +13,7 @@ env:
 before_install:
   - docker network create lol
   - docker pull elasticsearch:$ES_VER
-    - >-
+  - >-
     docker run -d
     --name es
     --network lol
