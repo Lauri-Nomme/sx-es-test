@@ -1,0 +1,2 @@
+dual(10)
+.save_es(uri:'es:9200', index:'imported')

@@ -6,25 +6,36 @@ services:
 env:
 #  - SX_VER=latest
   - SX_VER=v1.4.67
+  - ES_VER=1.7.6-alpine
 
 before_install:
+  - docker network create lol
   - docker pull spectx/spectx:$SX_VER
-  - rm -f sx.cid || true
   - >-
       docker run -d
-      --cidfile sx.cid
+      --name sx
+      --network lol
       -p 18388:8388
       -e SPECTX_ACCEPT_EULA=true
       -e SPECTX_ADMIN_PASSWORD=kalamaja
       -v $(realpath spectx.lic):/opt/spectx/spectx.lic
       spectx/spectx:$SX_VER -vvv
-  - export SX_CID=$(cat sx.cid)
-  - docker exec -uroot $SX_CID bash '-c' 'while true ; do netstat -ltn | grep -cq 8388 && break; sleep 0.1 ; done'
-  - sleep 5
-  - docker exec -uroot $SX_CID bash '-c' 'apk add sqlite; until [ -f /opt/spectxhome/sxwgui.db ] ; do echo . ; sleep 0.1 ; done; echo yep ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "update users set api_access_key = \"7a499b39279cb2f7\";" ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "select * from users;"'
+  - docker exec -uroot sx bash '-c' 'while true ; do netstat -ltn | grep -cq 8388 && break; sleep 0.1 ; done'
+  - sleep 1
+  - docker exec -uroot sx bash '-c' 'apk add sqlite; until [ -f /opt/spectxhome/sxwgui.db ] ; do echo . ; sleep 0.1 ; done; echo yep ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "update users set api_access_key = \"7a499b39279cb2f7\";" ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "select * from users;"'
+
+  - docker pull elasticsearch:$ES_VER
   - >-
-    curl -v -H'Authorization: Bearer 7a499b39279cb2f7' -d'dual(20)' 'http://127.0.0.1:18388/API/v1.0/?scriptPath=/user' || true
-  - docker logs $SX_CID
+      docker run -d
+      --name es
+      --network lol
+      -e discovery.type=single-node
+      elasticsearch:$ES_VER
+  - docker exec es bash '-c' 'while true ; do netstat -ltn | grep -cq 9200 && break; sleep 0.1 ; done'
 
 script:
-  - echo yep
+  - >-
+    curl -H'Authorization: Bearer 7a499b39279cb2f7' --data-binary @test.sx 'http://127.0.0.1:18388/API/v1.0/?scriptPath=/user'
+
+after_failure:
+  - docker logs sx
