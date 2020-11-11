@@ -34,7 +34,8 @@ before_install:
       -e discovery.type=single-node
       -e xpack.ml.enabled=false
       elasticsearch:$ES_VER
-  - docker exec es bash '-c' 'while true ; do nc -zvn 127.0.0.1 9200 && break; sleep 0.1 ; done'
+  - docker exec es bash '-c' 'while true ; do nc -zvn 127.0.0.1 9200 && break; sleep 0.1 ; done;'
+  - while true ; do curl -s http://127.0.0.1:9200/_cluster/health && break; sleep 0.1 ; done
 
 script:
   - >-
