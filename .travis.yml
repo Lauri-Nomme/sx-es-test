@@ -4,9 +4,10 @@ services:
   - docker
 
 env:
-#  - SX_VER=latest
-  - SX_VER=v1.4.67
-  - ES_VER=1.7.6-alpine
+  global:
+    - SX_VER=v1.4.67
+  jobs:
+    - ES_VER=1.7.6-alpine
 
 before_install:
   - docker network create lol
