@@ -17,6 +17,7 @@ before_install:
     docker run -d
     --name es
     --network lol
+    -p 9200:9200
     -e discovery.type=single-node
     -e xpack.ml.enabled=false
     elasticsearch:$ES_VER
