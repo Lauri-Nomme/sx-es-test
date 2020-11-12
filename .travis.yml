@@ -91,7 +91,6 @@ before_install:
   - sleep 1
   - docker exec -uroot sx bash '-c' 'apk add sqlite; until [ -f /opt/spectxhome/sxwgui.db ] ; do echo . ; sleep 0.1 ; done; echo yep ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "update users set api_access_key = \"7a499b39279cb2f7\";" ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "select * from users;"'
 
-  - docker exec es bash '-c' 'while true ; do nc -zvn 127.0.0.1 9200 && break; sleep 0.1 ; done;'
   - while true ; do curl -s http://127.0.0.1:9200/_cluster/health && break; sleep 0.1 ; done
 
 script:
