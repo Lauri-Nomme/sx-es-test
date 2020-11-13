@@ -1,0 +1,6 @@
+@read = es(uri:'127.0.0.1:9200', index:'imported')
+.filter(i = 0);
+
+Assert.equals('', VALUES([
+  {s: "0ho0", d: 0.0f, t: t("2020-11-13 10:00:00.123 +0200"), f: 0.0f, ip: "0.0.0.0", i: 0L, l: 0L, m: "00-00-00-00-00-00"}
+]), @read)

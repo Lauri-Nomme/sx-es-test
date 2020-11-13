@@ -5,7 +5,8 @@ services:
 
 env:
   global:
-    - SX_VER=v1.4.67
+    - SX_IMAGE=laurinomme/spectx-test
+    - SX_VER=v0.0.0-99-g965737fa9
   jobs:
     - ES_VER=1.7.6-alpine # EOL 2017-01-16
     - ES_VER=2.0.0        # EOL 2017-04-28
@@ -77,7 +78,8 @@ before_install:
     -e xpack.ml.enabled=false
     elasticsearch:$ES_VER
 
-  - docker pull spectx/spectx:$SX_VER
+  - echo "$DOCKERHUB_PWD" | docker login -u "$DOCKERHUB_USER" --password-stdin
+  - docker pull $SX_IMAGE:$SX_VER
   - >-
       docker run -d
       --name sx
