@@ -88,7 +88,7 @@ before_install:
       -e SPECTX_ACCEPT_EULA=true
       -e SPECTX_ADMIN_PASSWORD=kalamaja
       -v $(realpath spectx.lic):/opt/spectx/spectx.lic
-      spectx/spectx:$SX_VER -vvv
+      $SX_IMAGE:$SX_VER -vvv
   - docker exec -uroot sx bash '-c' 'while true ; do nc -zvn 127.0.0.1 8388 && break; sleep 0.1 ; done'
   - sleep 1
   - docker exec -uroot sx bash '-c' 'apk add sqlite; until [ -f /opt/spectxhome/sxwgui.db ] ; do echo . ; sleep 0.1 ; done; echo yep ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "update users set api_access_key = \"7a499b39279cb2f7\";" ; sqlite3 -cmd ".timeout 10000" /opt/spectxhome/sxwgui.db "select * from users;"'
