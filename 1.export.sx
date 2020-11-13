@@ -1,4 +1,4 @@
-@read = es(uri:'127.0.0.1:9200', index:'imported')
+@read = es(uri:'es:9200', index:'imported')
 .filter(i = 0);
 
 Assert.equals('', VALUES([
