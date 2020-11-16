@@ -6,7 +6,7 @@ services:
 env:
   global:
     - SX_IMAGE=laurinomme/spectx-test
-    - SX_VER=v0.0.0-99-g965737fa9
+    - SX_VER=v1.4.67-56-g52546c559
   jobs:
     - ES_VER=1.7.6-alpine # EOL 2017-01-16
     - ES_VER=2.0.0        # EOL 2017-04-28
