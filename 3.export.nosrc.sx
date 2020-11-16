@@ -1,0 +1,22 @@
+@read = es(uri:'es:9200', index:'nosrc')
+.filter(short <= 10)
+.sort(short)
+.select(short, integer, long);
+
+Assert.equals(
+  '',
+  VALUES([
+	{short: 0, integer: 0, long: 0L},
+	{short: 1, integer: 1, long: 1L},
+	{short: 2, integer: 2, long: 2L},
+	{short: 3, integer: 3, long: 3L},
+	{short: 4, integer: 4, long: 4L},
+	{short: 5, integer: 5, long: 5L},
+	{short: 6, integer: 6, long: 6L},
+	{short: 7, integer: 7, long: 7L},
+	{short: 8, integer: 8, long: 8L},
+	{short: 9, integer: 9, long: 9L},
+	{short: 10, integer: 10, long: 10L}
+  ]),
+  @read
+);
