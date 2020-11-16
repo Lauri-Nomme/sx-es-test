@@ -1,6 +1,21 @@
 @read = es(uri:'es:9200', index:'imported')
 .filter(i = 0);
 
+@floatAsDouble = @read
+.select(
+  s,
+  case TYPE(d) when 'FLOAT' then 'DOUBLE' else TYPE(d) end as t_d,
+  string(d) as d,
+  t,
+  case type(f) when 'FLOAT' then 'DOUBLE' else TYPE(f) end as t_f,
+  string(f) as f,
+  ip,
+  i,
+  l,
+  m
+);
+
+
 Assert.equals('', VALUES([
-  {s: "0ho0", d: 0.0f, t: t("2020-11-13 10:00:00.123 +0200"), f: 0.0f, ip: "0.0.0.0", i: 0L, l: 0L, m: "00-00-00-00-00-00"}
-]), @read)
+  {s: "0ho0", t_d: "DOUBLE", d: "0.0", t: t("2020-11-13 10:00:00.123 +0200"), t_f: "DOUBLE", f: "0.0", ip: "0.0.0.0", i: 0L, l: 0L, m: "00-00-00-00-00-00"}
+]), @floatAsDouble)
