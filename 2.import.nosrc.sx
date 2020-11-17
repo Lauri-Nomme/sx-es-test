@@ -1,5 +1,8 @@
+init(
+    t:'kala'
+);
 @import = dual(20)
 .select(short, integer, float, long)
-.save_es(uri:'es:9200', index:'nosrc', type:'kala');
+.save_es(uri:'es:9200', index:'nosrc', type:IF($t != '_doc', $t));
 
 Assert.equals('', values(rows:20L), @import.select(rows));

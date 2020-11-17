@@ -1,7 +1,8 @@
 init(
-'_query.now':T('2020-11-13 10:00:00.123 +0200')
+    '_query.now':T('2020-11-13 10:00:00.123 +0200'),
+    t:'kala'
 );
 @import = dual(10)
-.save_es(uri:'es:9200', index:'imported', type:'kala');
+.save_es(uri:'es:9200', index:'imported', type:IF($t != '_doc', $t));
 
 Assert.equals('', values(rows:10L), @import.select(rows));

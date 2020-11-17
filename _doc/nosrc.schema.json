@@ -1,0 +1,24 @@
+{
+  "mappings": {
+    "_source": {
+      "enabled": false
+    },
+    "properties": {
+      "long": {
+        "type": "long",
+        "store": true
+      },
+      "integer": {
+        "type": "integer",
+        "store": true
+      },
+      "short": {
+        "type": "short",
+        "store": true
+      },
+      "float": {
+        "type": "float"
+      }
+    }
+  }
+}
