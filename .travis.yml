@@ -104,6 +104,7 @@ script:
       { code=$(curl -s -o /dev/stderr --write-out "%{http_code}" -H'Authorization: Bearer 7a499b39279cb2f7' --data-binary @$t 'http://127.0.0.1:18388/API/v1.0/?scriptPath=/user&t='$T); } 2>&1
       echo $code
       if [ $((code/100)) -ne 2 ]; then exit 1; fi
+      curl -X POST 'http://127.0.0.1:9200/_refresh'
     done)
 
 after_failure:
