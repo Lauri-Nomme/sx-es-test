@@ -6,7 +6,7 @@ services:
 env:
   global:
     - SX_IMAGE=laurinomme/spectx-test
-    - SX_VER=v1.4.67-56-g52546c559
+    - SX_VER=v1.4.67-57-g412740956
   jobs:
     - T=kala ES_VER=1.7.6-alpine # EOL 2017-01-16
     - T=kala ES_VER=2.0.0        # EOL 2017-04-28
