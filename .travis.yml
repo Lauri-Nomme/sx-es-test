@@ -65,6 +65,8 @@ env:
     - T=_doc ES_VER=7.8.1
     - T=_doc ES_VER=7.9.0
     - T=_doc ES_VER=7.9.3
+    - T=_doc ES_VER=7.10.1
+    - T=_doc ES_VER=7.11.1 ES_REPO=docker.elastic.co/elasticsearch/elasticsearch
 
 before_install:
   - docker network create lol
@@ -76,7 +78,7 @@ before_install:
     -p 9200:9200
     -e discovery.type=single-node
     -e xpack.ml.enabled=false
-    elasticsearch:$ES_VER
+    $(ES_REPO:-elasticsearch):$ES_VER
 
   - echo "$DOCKERHUB_PWD" | docker login -u "$DOCKERHUB_USER" --password-stdin
   - docker pull $SX_IMAGE:$SX_VER
