@@ -1,0 +1,11 @@
+@read = es(uri:'es:9200', index:'nosrc', masterFields:['long'], detailFields:['short', 'integer'])
+.filter(_detail['integer'] = 2 AND long != 3);
+
+
+Assert.equals(
+    '',
+    VALUES([
+        {long: 2L, _detail: var_obj({"short": 2, "integer": 2})}
+    ]),
+    @read
+);
