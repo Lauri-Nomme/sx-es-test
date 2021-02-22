@@ -78,7 +78,7 @@ before_install:
     -p 9200:9200
     -e discovery.type=single-node
     -e xpack.ml.enabled=false
-    $(ES_REPO:-elasticsearch):$ES_VER
+    ${ES_REPO:-elasticsearch}:$ES_VER
 
   - echo "$DOCKERHUB_PWD" | docker login -u "$DOCKERHUB_USER" --password-stdin
   - docker pull $SX_IMAGE:$SX_VER
